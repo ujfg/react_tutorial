@@ -10,7 +10,6 @@ export const Game: FC = () => {
   const [xIsNext, setXIsNext] = useState<boolean>(true)
   const [currentMove, setCurrentMove] = useState<number>(0)
 
-  // const currentBoardStatus = history[history.length - 1].boardStatus
   const currentBoardStatus = history[currentMove].boardStatus
   const winner = calculateWinner(currentBoardStatus);
   let status: string
