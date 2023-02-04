@@ -1,9 +1,9 @@
 import { FC, useState } from "react";
-import { calculateWinner, Sign } from ".";
+import { calculateWinner, SquareSign } from "./Game";
 import { Square } from "./Square";
 
 export const Board: FC = () => {
-  const [squares, setSquares] = useState<Sign[]>(Array(9).fill(null))
+  const [squares, setSquares] = useState<SquareSign[]>(Array(9).fill(null))
   const [xIsNext, setXIsNext] = useState<boolean>(true)
 
   const winner = calculateWinner(squares);
