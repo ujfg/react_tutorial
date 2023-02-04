@@ -1,4 +1,4 @@
-import React, { FC, useState } from "react";
+import { FC, useState } from "react";
 import { Board } from "./Board";
 
 export type SquareSign = 'X' | 'O' | null
@@ -8,7 +8,10 @@ export type History = {boardStatus: BoardStatus}[]
 export const Game: FC = () => {
   const [history, setHistory] = useState<History>([{boardStatus: Array(9).fill(null)}])
   const [xIsNext, setXIsNext] = useState<boolean>(true)
-  const currentBoardStatus = history[history.length - 1].boardStatus
+  const [currentMove, setCurrentMove] = useState<number>(0)
+
+  // const currentBoardStatus = history[history.length - 1].boardStatus
+  const currentBoardStatus = history[currentMove].boardStatus
   const winner = calculateWinner(currentBoardStatus);
   let status: string
   if (winner) {
@@ -17,14 +20,32 @@ export const Game: FC = () => {
     status = 'Next player: ' + (xIsNext ? 'X' : 'O')
   }
 
+  const moves = history.map((_boardStatus, move) => {
+    const desc = move !== 0 ?
+      'Go to move #' + move :
+      'Go to game start';
+    return (
+      <li key={move}>
+        <button onClick={() => jumpTo(move)}>{desc}</button>
+      </li>
+    );
+  });
+
+  const jumpTo = (move: number) => {
+    setCurrentMove(move)
+    setXIsNext(move % 2 === 0)
+  }
+
   const handleClick = (i: number) => {
-    const currentBoardStatus = history[history.length - 1].boardStatus.slice()
-    if (calculateWinner(currentBoardStatus) || currentBoardStatus[i]) {
+    const current_history = history.slice(0, currentMove + 1) // 1手目からジャンプ先までのhistory
+    const boardStatus = current_history[current_history.length - 1].boardStatus.slice()
+    if (calculateWinner(boardStatus) || boardStatus[i]) {
       return;
     }
-    currentBoardStatus[i] = xIsNext ? 'X' : 'O'
-    setHistory(history.concat([{boardStatus: currentBoardStatus}]))
+    boardStatus[i] = xIsNext ? 'X' : 'O'
+    setHistory(current_history.concat([{boardStatus: boardStatus}]))
     setXIsNext(!xIsNext)
+    setCurrentMove(currentMove + 1)
   }
   
   return (
@@ -34,7 +55,7 @@ export const Game: FC = () => {
       </div>
       <div className="game-info">
         <div>{status}</div>
-        <ol>{/* TODO */}</ol>
+        <ol>{moves}</ol>
       </div>
     </div>
   );
