@@ -1,4 +1,5 @@
 import { FC, useState } from "react";
+import styled from "styled-components";
 import { Board } from "./Board";
 
 export type SquareSign = 'X' | 'O' | null
@@ -19,9 +20,9 @@ export const Game: FC = () => {
       description = 'Go to game start'
     }
     return (
-      <li key={move}>
+      <Li key={move}>
         <button onClick={() => jumpTo(move)}>{description}</button>
-      </li>
+      </Li>
     );
   });
 
@@ -39,17 +40,34 @@ export const Game: FC = () => {
   }
   
   return (
-    <div className="game">
-      <div className="game-board">
+    <Wrapper>
+      <div>
         <Board
           xIsNext={xIsNext}
           squares={currentSquares} 
           onPlay={handlePlay}
         />
       </div>
-      <div className="game-info">
-        <ol>{moves}</ol>
-      </div>
-    </div>
+      <GameInfoDiv>
+        <Ol>{moves}</Ol>
+      </GameInfoDiv>
+    </Wrapper>
   );
 }
+
+const Wrapper = styled.div`
+  display: flex;
+  flex-direction: row;
+`
+
+const Ol = styled.ol`
+  padding-left: 30px;
+`
+
+const Li = styled.li`
+  padding-left: 30px;
+`
+
+const GameInfoDiv = styled.div`
+  margin-left: 20px;
+`

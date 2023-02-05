@@ -1,4 +1,5 @@
 import { FC } from "react";
+import styled from "styled-components";
 import { SquareSign } from "./Game";
 import { Square } from "./Square";
 
@@ -45,25 +46,36 @@ export const Board: FC<BoardProps> = ({
 
   return (
     <>
-      <div className="status">{status}</div>
-      <div className="board-row">
+      <StatusDiv>{status}</StatusDiv>
+      <BoardRow>
         {renderSquare(0)}
         {renderSquare(1)}
         {renderSquare(2)}
-      </div>
-      <div className="board-row">
+      </BoardRow>
+      <BoardRow>
         {renderSquare(3)}
         {renderSquare(4)}
         {renderSquare(5)}
-      </div>
-      <div className="board-row">
+      </BoardRow>
+      <BoardRow>
         {renderSquare(6)}
         {renderSquare(7)}
         {renderSquare(8)}
-      </div>
+      </BoardRow>
     </>
   )
 }
+
+const StatusDiv = styled.div`
+  margin-bottom: 10px;
+`
+const BoardRow = styled.div`
+  ::after{
+    clear: both;
+    content: "";
+    display: table;
+  }
+`
 
 const calculateWinner = (squares: SquareSign[]) => {
   const lines = [
