@@ -14,14 +14,23 @@ export const Game: FC = () => {
 
   const moves = history.map((_squares, move) => {
     let description: string
-    if (move > 0) {
+    if (move === currentMove) {
+      description = 'You are at move #' + move
+    } else if (move > 0) {
       description = 'Go to move #' + move
     } else {
       description = 'Go to game start'
     }
+    const renderMove = (move: number) => {
+      if (move === currentMove) {
+        return description
+      } else {
+        return <button onClick={() => jumpTo(move)}>{description}</button>
+      }
+    }
     return (
       <Li key={move}>
-        <button onClick={() => jumpTo(move)}>{description}</button>
+        {renderMove(move)}
       </Li>
     );
   });
@@ -49,7 +58,7 @@ export const Game: FC = () => {
         />
       </div>
       <GameInfoDiv>
-        <Ol>{moves}</Ol>
+        <Ul>{moves}</Ul>
       </GameInfoDiv>
     </Wrapper>
   );
@@ -60,7 +69,7 @@ const Wrapper = styled.div`
   flex-direction: row;
 `
 
-const Ol = styled.ol`
+const Ul = styled.ul`
   padding-left: 30px;
 `
 
