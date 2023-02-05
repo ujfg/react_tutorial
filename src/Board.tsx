@@ -1,5 +1,5 @@
 import { FC } from "react";
-import { BoardStatus } from "./Game";
+import { BoardStatus} from "./Game";
 import { Square } from "./Square";
 
 type BoardProps = {
@@ -7,12 +7,15 @@ type BoardProps = {
   onClick(i: number): void
 }
 
-export const Board: FC<BoardProps> = (props) => {
+export const Board: FC<BoardProps> = ({
+  squares,
+  onClick,
+}) => {
   const renderSquare = (i: number) => {
     return (
       <Square 
-        value={props.squares[i]}
-        onClick={() => props.onClick(i)} 
+        value={squares[i]}
+        onClick={() => onClick(i)} 
       />
     )
   }

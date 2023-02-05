@@ -7,9 +7,9 @@ export type History = {boardStatus: BoardStatus}[]
 
 export const Game: FC = () => {
   const [history, setHistory] = useState<History>([{boardStatus: Array(9).fill(null)}])
-  const [xIsNext, setXIsNext] = useState<boolean>(true)
   const [currentMove, setCurrentMove] = useState<number>(0)
 
+  const xIsNext = currentMove % 2 === 0
   const currentBoardStatus = history[currentMove].boardStatus
   const winner = calculateWinner(currentBoardStatus);
   let status: string
@@ -32,7 +32,6 @@ export const Game: FC = () => {
 
   const jumpTo = (move: number) => {
     setCurrentMove(move)
-    setXIsNext(move % 2 === 0)
   }
 
   const handleClick = (i: number) => {
@@ -43,7 +42,6 @@ export const Game: FC = () => {
     }
     boardStatus[i] = xIsNext ? 'X' : 'O'
     setHistory(current_history.concat([{boardStatus: boardStatus}]))
-    setXIsNext(!xIsNext)
     setCurrentMove(currentMove + 1)
   }
   

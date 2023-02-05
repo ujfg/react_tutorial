@@ -5,10 +5,10 @@ type SquareProps = {
   onClick(): void
 }
 
-export const Square: FC<SquareProps> = (props) => {
+export const Square: FC<SquareProps> = ({value, onClick}) => {
   return(
-    <button className='square' onClick={props.onClick}>
-      {props.value}
+    <button className='square' onClick={onClick}>
+      {value}
     </button>
   )
 }
