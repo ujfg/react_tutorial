@@ -38,30 +38,31 @@ export const Board: FC<BoardProps> = ({
   const renderSquare = (i: number) => {
     return (
       <Square 
+        key={i}
         value={squares[i]}
         onSquareClick={() => handleClick(i)} 
       />
     )
   }
 
+  const renderRow = (numbers: number[], index: number) => {
+    return (
+      <BoardRow key={index}>
+        {numbers.map((number) => {
+          return renderSquare(number)
+        })}
+      </BoardRow>
+    )
+  }
+
+  const rows = [[0, 1, 2], [3, 4, 5], [6, 7, 8]]
+
   return (
     <>
       <StatusDiv>{status}</StatusDiv>
-      <BoardRow>
-        {renderSquare(0)}
-        {renderSquare(1)}
-        {renderSquare(2)}
-      </BoardRow>
-      <BoardRow>
-        {renderSquare(3)}
-        {renderSquare(4)}
-        {renderSquare(5)}
-      </BoardRow>
-      <BoardRow>
-        {renderSquare(6)}
-        {renderSquare(7)}
-        {renderSquare(8)}
-      </BoardRow>
+      {rows.map((row, index) => {
+        return renderRow(row, index)
+      })}
     </>
   )
 }
