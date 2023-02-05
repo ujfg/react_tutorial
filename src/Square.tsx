@@ -2,12 +2,12 @@ import { FC } from "react"
 
 type SquareProps = {
   value: string | null
-  onClick(): void
+  onSquareClick(): void
 }
 
-export const Square: FC<SquareProps> = ({value, onClick}) => {
+export const Square: FC<SquareProps> = ({value, onSquareClick}) => {
   return(
-    <button className='square' onClick={onClick}>
+    <button className='square' onClick={onSquareClick}>
       {value}
     </button>
   )
