@@ -1,6 +1,7 @@
 import { FC, useState } from "react";
 import styled from "styled-components";
 import { Board } from "./Board";
+import { MoveList } from "./MoveList";
 
 export type SquareSign = 'X' | 'O' | null
 export type History = SquareSign[][]
@@ -11,29 +12,6 @@ export const Game: FC = () => {
 
   const xIsNext = currentMove % 2 === 0
   const currentSquares = history[currentMove]
-
-  const moves = history.map((_squares, move) => {
-    let description: string
-    if (move === currentMove) {
-      description = 'You are at move #' + move
-    } else if (move > 0) {
-      description = 'Go to move #' + move
-    } else {
-      description = 'Go to game start'
-    }
-    const renderMove = (move: number) => {
-      if (move === currentMove) {
-        return description
-      } else {
-        return <button onClick={() => jumpTo(move)}>{description}</button>
-      }
-    }
-    return (
-      <Li key={move}>
-        {renderMove(move)}
-      </Li>
-    );
-  });
 
   const jumpTo = (move: number) => {
     setCurrentMove(move)
@@ -58,7 +36,7 @@ export const Game: FC = () => {
         />
       </div>
       <GameInfoDiv>
-        <Ul>{moves}</Ul>
+        <MoveList histories={history} currentMove={currentMove} onJump={jumpTo}></MoveList>
       </GameInfoDiv>
     </Wrapper>
   );
@@ -67,14 +45,6 @@ export const Game: FC = () => {
 const Wrapper = styled.div`
   display: flex;
   flex-direction: row;
-`
-
-const Ul = styled.ul`
-  padding-left: 30px;
-`
-
-const Li = styled.li`
-  padding-left: 30px;
 `
 
 const GameInfoDiv = styled.div`
