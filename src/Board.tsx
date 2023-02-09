@@ -14,16 +14,18 @@ export const Board: FC<BoardProps> = ({
   onPlay,
   xIsNext,
 }) => {
-  const winner = calculateWinner(squares)
+  const winnerSquares = calculateWinnerSquares(squares)
   let status: string
-  if (winner) {
-    status = 'Winner: ' + winner
-  } else {
+  if (winnerSquares) {
+    status = 'Winner: ' + squares[winnerSquares[0]]
+  } else if (squares.some((square) => !square )) {
     status = 'Next player: ' + (xIsNext ? 'X' : 'O')
+  } else {
+    status = 'draw...'
   }
 
   const handleClick = (i: number) => {
-    if (calculateWinner(squares) || squares[i]) {
+    if (calculateWinnerSquares(squares) || squares[i]) {
       return
     }
     const nextSquares = squares.slice()
@@ -35,12 +37,20 @@ export const Board: FC<BoardProps> = ({
     onPlay(nextSquares)
   }
 
+  const isHighlighted = (index: number) => {
+    const winnerSquares = calculateWinnerSquares(squares)
+    if (!winnerSquares) return false
+
+    return winnerSquares.includes(index)
+  } 
+
   const renderSquare = (i: number) => {
     return (
       <Square 
         key={i}
         value={squares[i]}
         onSquareClick={() => handleClick(i)} 
+        highlighted={isHighlighted(i)}
       />
     )
   }
@@ -78,7 +88,7 @@ const BoardRow = styled.div`
   }
 `
 
-const calculateWinner = (squares: SquareSign[]) => {
+const calculateWinnerSquares = (squares: SquareSign[]) => {
   const lines = [
     [0, 1, 2],
     [3, 4, 5],
@@ -92,7 +102,7 @@ const calculateWinner = (squares: SquareSign[]) => {
   for (let i = 0; i < lines.length; i++) {
     const [a, b, c] = lines[i];
     if (squares[a] && squares[a] === squares[b] && squares[a] === squares[c]) {
-      return squares[a];
+      return [a, b, c];
     }
   }
   return null;
